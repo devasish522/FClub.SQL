@@ -142,3 +142,18 @@ LEFT JOIN Sizes S WITH(NOLOCK) ON S.SizeID = IPS.SizeID
 LEFT JOIN Brands B WITH(NOLOCK) ON B.BrandID = IPS.BrandID      
 WHERE P.SKUCode = @SKUCode AND P.IsActive = 1    
 END
+
+GO
+
+CREATE PROC USP_GET_SalesDetails --'09/16/2022', '09/16/2022'
+(
+@StartDate	DATETIME,
+@EndDate	DATETIME
+)
+AS
+BEGIN
+SELECT ISD.TransectionNo, ISD.CustomerName, ISD.PhoneNo, ISD.PaymentType, ISD.CashAmount, ISD.UPIAmount, ISD.LoanAmount, 
+ISD.ReturnTransectionAmount, ISD.ReturnTransectionNo, ISD.AdditionalDiscount, ISD.IsGST, ISD.IsReceipt
+FROM InvoiceSaleDetails ISD WITH(NOLOCK)
+WHERE ISD.IsActive = 1 AND CAST(ISD.CreatedDate AS DATE) BETWEEN @StartDate AND @EndDate
+END
